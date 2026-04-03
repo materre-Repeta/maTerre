@@ -29,7 +29,8 @@
       "Bash(gh repo:*)",
       "Bash(git push:*)",
       "Bash(git remote:*)",
-      "Bash(doppler:*)"
+      "Bash(doppler:*)",
+      "Bash(git rm:*)"
     ]
   }
 }

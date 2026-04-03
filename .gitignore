@@ -6,6 +6,10 @@ backend/target/
 .idea/
 *.iml
 .vscode/
+.claude/
+
+# Angular cache
+frontend/.angular/
 
 # Build
 frontend/dist/
