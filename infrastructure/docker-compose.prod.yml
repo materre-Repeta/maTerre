@@ -1,74 +1,80 @@
-services:
-  traefik:
-    image: traefik:v3.0
-    command:
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.email=admin@materre.online"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./letsencrypt:/letsencrypt"
-    networks:
-      - materre-network
+# Production docker-compose for konch deployment
+# Secrets injected from Doppler via konch into .env
+# SSL handled by Cloudflare tunnel
 
+services:
   postgres:
     image: postgres:16-alpine
+    container_name: materre-postgres
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ../infrastructure/database/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-admin} -d ${DB_NAME:-materre}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
     networks:
       - materre-network
 
   backend:
-    image: ghcr.io/materre-repeta/backend:develop
+    image: ghcr.io/materre-repeta/backend:main
+    container_name: materre-api
     environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
       SPRING_DATASOURCE_DRIVER: org.postgresql.Driver
       SPRING_JPA_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
-      JWT_EXPIRATION: ${JWT_EXPIRATION}
-      SERVER_PORT: ${SERVER_PORT}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+      SERVER_PORT: ${SERVER_PORT:-8081}
       H2_CONSOLE_ENABLED: "false"
       JPA_SHOW_SQL: "false"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`api.materre.online`)"
-      - "traefik.http.routers.backend.entrypoints=websecure"
-      - "traefik.http.routers.backend.tls.certresolver=myresolver"
-      - "traefik.http.services.backend.loadbalancer.server.port=8081"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:8081/api/health"]
+      interval: 15s
+      timeout: 10s
+      start_period: 120s
+      retries: 10
+    restart: unless-stopped
     networks:
       - materre-network
+      - konch
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   frontend:
-    image: ghcr.io/materre-repeta/frontend:develop
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`materre.online`) || Host(`www.materre.online`)"
-      - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.tls.certresolver=myresolver"
+    image: ghcr.io/materre-repeta/frontend:main
+    container_name: materre-web
+    restart: unless-stopped
     networks:
       - materre-network
+      - konch
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   materre-network:
     driver: bridge
+  konch:
+    external: true
 
 volumes:
   postgres_data:
-  letsencrypt:
+    driver: local
