@@ -123,9 +123,16 @@ async function generateIcons() {
     .toFile(path.join(outDir, 'icon.png'));
   console.log('Generated icon.png (icon only, 400x400)');
 
-  // OG image — clean logo on dark green background
-  await sharp(logoCleanBuffer)
-    .resize(1200, 630, { fit: 'contain', background: { r: 27, g: 67, b: 50, alpha: 255 } })
+  // OG image — logo composited on solid dark green background
+  const logoResized = await sharp(logoCleanBuffer)
+    .resize(500, 400, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .png()
+    .toBuffer();
+
+  await sharp({
+    create: { width: 1200, height: 630, channels: 4, background: { r: 27, g: 67, b: 50, alpha: 255 } }
+  })
+    .composite([{ input: logoResized, gravity: 'centre' }])
     .png()
     .toFile(path.join(outDir, 'og-image.png'));
   console.log('Generated og-image.png (1200x630)');
