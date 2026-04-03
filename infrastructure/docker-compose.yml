@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: materre-db
+    environment:
+      POSTGRES_DB: materre
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: materre_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - materre-network
+
+networks:
+  materre-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

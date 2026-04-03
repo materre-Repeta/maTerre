@@ -1,0 +1,248 @@
+<section class="pre-invest-dashboard">
+
+  <!-- Section Header -->
+  <div class="section-header animate-in">
+    <span class="badge badge-gold">FINANCEMENT</span>
+    <h1 class="section-title">Le Levier Financier</h1>
+    <p class="section-subtitle">
+      maTerre finance le titrage de votre terrain coutumier. Vous ne payez rien jusqu'à l'obtention du titre.
+    </p>
+  </div>
+
+  <!-- ═══ STEP 0: INTRO ═══ -->
+  <div *ngIf="currentStep === 0" class="intro-section animate-in">
+    <div class="intro-card card">
+      <div class="intro-steps">
+        <div class="intro-step">
+          <div class="intro-step-num">1</div>
+          <div class="intro-step-content">
+            <h3>Éligibilité</h3>
+            <p>Répondez à 5 questions sur votre terrain pour évaluer la faisabilité du financement.</p>
+          </div>
+        </div>
+        <div class="intro-step">
+          <div class="intro-step-num">2</div>
+          <div class="intro-step-content">
+            <h3>Simulation</h3>
+            <p>Simulez le coût du titrage et votre plus-value après obtention du titre foncier.</p>
+          </div>
+        </div>
+        <div class="intro-step">
+          <div class="intro-step-num">3</div>
+          <div class="intro-step-content">
+            <h3>Demande</h3>
+            <p>Soumettez votre dossier. Un notaire partenaire prendra en charge votre terrain.</p>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-gold btn-lg intro-cta" (click)="startQuestionnaire()">
+        Évaluer mon terrain
+      </button>
+    </div>
+
+    <!-- Trust indicators -->
+    <div class="trust-row stagger">
+      <div class="trust-item">
+        <span class="trust-icon">🛡️</span>
+        <span class="trust-label">Aucun frais initial</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">📋</span>
+        <span class="trust-label">Terrain non titré accepté</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">⚖️</span>
+        <span class="trust-label">Notaire certifié</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ STEPS 1-5: QUESTIONNAIRE ═══ -->
+  <div *ngIf="currentStep === 1" class="questionnaire-section animate-in">
+    <!-- Progress bar -->
+    <div class="quiz-progress">
+      <div class="quiz-progress-fill" [style.width.%]="((questionIndex + 1) / questions.length) * 100"></div>
+    </div>
+    <div class="quiz-progress-label">
+      Question {{ questionIndex + 1 }} / {{ questions.length }}
+    </div>
+
+    <!-- Question card -->
+    <div class="quiz-card card animate-in" [attr.data-q]="questionIndex">
+      <div class="quiz-icon">{{ questions[questionIndex].icon }}</div>
+      <h2 class="quiz-question">{{ questions[questionIndex].question }}</h2>
+
+      <div class="quiz-options">
+        <button *ngFor="let opt of questions[questionIndex].options"
+                class="quiz-option"
+                [class.selected]="questions[questionIndex].selected === opt.value"
+                (click)="selectAnswer(questionIndex, opt.value)">
+          <span class="quiz-option-radio">
+            <span class="quiz-option-dot" *ngIf="questions[questionIndex].selected === opt.value"></span>
+          </span>
+          {{ opt.label }}
+        </button>
+      </div>
+
+      <div class="quiz-nav">
+        <button *ngIf="questionIndex > 0" class="btn btn-ghost" (click)="prevQuestion()">
+          ← Précédent
+        </button>
+        <div *ngIf="questionIndex === 0"></div>
+        <button class="btn btn-primary"
+                [disabled]="!questions[questionIndex].selected"
+                (click)="nextQuestion()">
+          {{ questionIndex < questions.length - 1 ? 'Suivant →' : 'Voir le résultat' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 6: RESULT ═══ -->
+  <div *ngIf="currentStep === 6 && !showSimulator" class="result-section animate-in">
+    <div class="result-card card" [class.result-eligible]="isEligible" [class.result-ineligible]="!isEligible">
+      <!-- Score circle -->
+      <div class="score-circle" [class.score-green]="isEligible" [class.score-red]="!isEligible">
+        <span class="score-value">{{ getScorePercentage() }}%</span>
+        <span class="score-label">{{ getScoreLabel() }}</span>
+      </div>
+
+      <h2 *ngIf="isEligible" class="result-title">Votre terrain est éligible !</h2>
+      <h2 *ngIf="!isEligible" class="result-title result-title-red">Terrain non éligible</h2>
+
+      <p *ngIf="isEligible" class="result-desc">
+        Votre situation foncière permet à maTerre de financer le titrage. Passez au simulateur pour estimer votre plus-value.
+      </p>
+      <p *ngIf="!isEligible" class="result-desc">
+        Votre terrain présente des blocages (litige actif ou absence de documents). Résolvez ces points puis refaites l'évaluation.
+      </p>
+
+      <!-- Summary of answers -->
+      <div class="result-summary">
+        <div *ngFor="let q of questions; let i = index" class="summary-row">
+          <span class="summary-icon">{{ q.icon }}</span>
+          <span class="summary-q">{{ q.question }}</span>
+          <span class="summary-a" [class.summary-ok]="q.options[0].value !== q.selected || true">
+            {{ q.options | keyvalue | slice:0:0 }}
+            <ng-container *ngFor="let opt of q.options">
+              <ng-container *ngIf="opt.value === q.selected">{{ opt.label }}</ng-container>
+            </ng-container>
+          </span>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button *ngIf="isEligible" class="btn btn-gold btn-lg" (click)="proceedToSimulator()">
+          Simuler le financement →
+        </button>
+        <button *ngIf="!isEligible" class="btn btn-outline" (click)="currentStep = 0">
+          Recommencer l'évaluation
+        </button>
+        <button class="btn btn-ghost" (click)="currentStep = 0">
+          Modifier mes réponses
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SIMULATOR ═══ -->
+  <div *ngIf="showSimulator" class="simulator-section animate-in">
+    <div class="eligible-banner animate-in">
+      <span class="eligible-dot"></span>
+      <span>Terrain éligible — Score {{ getScorePercentage() }}%</span>
+      <span class="badge badge-green">{{ getScoreLabel() }}</span>
+    </div>
+
+    <!-- Location -->
+    <div class="card location-card animate-in stagger">
+      <h3 class="location-title">Localisation du terrain</h3>
+      <div class="location-fields">
+        <div class="field-group">
+          <label>Ville</label>
+          <input type="text" [(ngModel)]="locationCity" placeholder="Ex: Yaoundé" class="input">
+        </div>
+        <div class="field-group">
+          <label>Quartier</label>
+          <input type="text" [(ngModel)]="locationQuarter" placeholder="Ex: Soa" class="input">
+        </div>
+      </div>
+    </div>
+
+    <!-- Simulator Card -->
+    <div class="card simulator-card animate-in stagger">
+      <h2 class="simulator-title">Simulateur de Financement</h2>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <label class="slider-label">Surface du terrain</label>
+          <span class="slider-value">{{ surface }} m²</span>
+        </div>
+        <input type="range" min="200" max="5000" step="100"
+               [(ngModel)]="surface" (input)="runSimulation()" class="custom-range"/>
+        <div class="slider-range-labels"><span>200 m²</span><span>5 000 m²</span></div>
+      </div>
+
+      <div class="model-toggle-group">
+        <label class="slider-label">Modèle de Remboursement</label>
+        <div class="model-toggle">
+          <button (click)="repaymentModel = 'LAND_PORTION'; runSimulation()"
+                  class="toggle-btn" [class.active]="repaymentModel === 'LAND_PORTION'">
+            📐 Part de Terrain
+          </button>
+          <button (click)="repaymentModel = 'SALE_COMMISSION'; runSimulation()"
+                  class="toggle-btn" [class.active]="repaymentModel === 'SALE_COMMISSION'">
+            💰 Com. sur Vente
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="repaymentModel === 'LAND_PORTION'" class="slider-group animate-in">
+        <div class="slider-header">
+          <label class="slider-label">Portion cédée à maTerre</label>
+          <span class="slider-value slider-value-gold">{{ portionPercentage }}%</span>
+        </div>
+        <input type="range" min="10" max="40" step="5"
+               [(ngModel)]="portionPercentage" (input)="runSimulation()" class="custom-range custom-range-gold"/>
+        <div class="slider-range-labels"><span>10%</span><span>40%</span></div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div *ngIf="simulationResults" class="results-grid animate-in stagger">
+      <div class="metric-card">
+        <span class="metric-icon-sm">🏠</span>
+        <span class="metric-label">Valeur actuelle</span>
+        <span class="metric-value">{{ formatCurrency(simulationResults.totalCurrentValue) }}</span>
+        <span class="metric-sub">Estimation sans titre</span>
+      </div>
+      <div class="metric-card metric-card-emerald">
+        <span class="metric-icon-sm">📈</span>
+        <span class="metric-label">Valeur après titrage</span>
+        <span class="metric-value metric-value-emerald">{{ formatCurrency(simulationResults.totalTitledValue) }}</span>
+        <span class="metric-sub">Multiplication ×3</span>
+      </div>
+      <div class="metric-card metric-card-gold">
+        <span class="metric-icon-sm">🏦</span>
+        <span class="metric-label">Investissement maTerre</span>
+        <span class="metric-value metric-value-gold">{{ formatCurrency(simulationResults.maTerreShare) }}</span>
+        <span class="metric-sub">Frais + Commission</span>
+      </div>
+      <div class="metric-card metric-card-highlight">
+        <span class="metric-icon-sm">🚀</span>
+        <span class="metric-label">Votre gain net</span>
+        <span class="metric-value">{{ formatCurrency(simulationResults.netGain) }}</span>
+        <span class="metric-sub">Bénéfice après remboursement</span>
+      </div>
+    </div>
+
+    <div class="cta-section animate-in stagger">
+      <button class="btn btn-gold btn-lg cta-main">
+        Demander un Financement maTerre
+      </button>
+      <p class="cta-disclaimer">
+        Un notaire partenaire maTerre sera assigné à votre dossier sous 72h.
+      </p>
+    </div>
+  </div>
+
+</section>

@@ -1,0 +1,358 @@
+/* ═══════════════════════════════════════════════
+   Investment Marketplace - Luxury African Fintech
+   ═══════════════════════════════════════════════ */
+
+.investment-marketplace {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+/* Section Header */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.header-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.shield-icon {
+  display: flex;
+  align-items: center;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--mt-charcoal);
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.section-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--mt-grey-warm);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Loading */
+.loading-state {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--mt-cream);
+  border-top-color: var(--mt-emerald);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-state p {
+  font-family: var(--font-body);
+  color: var(--mt-grey-warm);
+  font-size: 0.95rem;
+}
+
+/* ── Projects Grid ── */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 1.75rem;
+  margin-bottom: 4rem;
+}
+
+/* ── Project Card ── */
+.project-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(27, 67, 50, 0.1);
+}
+
+/* Header / Gradient Area */
+.project-header {
+  position: relative;
+  height: 160px;
+  overflow: hidden;
+}
+
+.project-header-gradient {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--mt-forest-deep), var(--mt-emerald), var(--mt-emerald-light));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.exclusive-header .project-header-gradient {
+  background: linear-gradient(135deg, var(--mt-forest-deep), var(--mt-forest), var(--mt-emerald));
+}
+
+.exclusive-header .project-header-gradient::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(212, 160, 23, 0.15), transparent 70%);
+  pointer-events: none;
+}
+
+/* Exclusive Badge */
+.exclusive-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  background: linear-gradient(135deg, var(--mt-gold), var(--mt-gold-light));
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--mt-forest-deep);
+  box-shadow: 0 4px 12px rgba(212, 160, 23, 0.3);
+}
+
+.project-location {
+  position: relative;
+  z-index: 1;
+}
+
+.project-location-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.2rem;
+}
+
+.project-location-detail {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Card Body */
+.project-body {
+  padding: 1.5rem;
+}
+
+/* Stats Row */
+.project-stats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--mt-charcoal);
+}
+
+.stat-roi strong {
+  color: var(--mt-gold);
+}
+
+.badge-sm {
+  font-size: 0.6rem !important;
+  padding: 0.2rem 0.5rem !important;
+}
+
+/* Funding Section */
+.funding-section {
+  margin-bottom: 1.25rem;
+}
+
+.funding-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.funding-raised {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--mt-charcoal);
+}
+
+.funding-goal {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--mt-grey-warm);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--mt-cream);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-gradient {
+  background: linear-gradient(90deg, var(--mt-emerald), var(--mt-emerald-light), var(--mt-gold));
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.funding-pct {
+  display: block;
+  text-align: right;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: var(--mt-grey-warm);
+  margin-top: 0.35rem;
+}
+
+/* Reward Box */
+.reward-box {
+  background: var(--mt-cream);
+  border: 1px solid var(--mt-cream-warm);
+  border-radius: 12px;
+  padding: 1rem 1.15rem;
+  margin-bottom: 1.25rem;
+}
+
+.reward-label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--mt-grey-warm);
+  margin-bottom: 0.3rem;
+}
+
+.reward-value {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--mt-gold);
+}
+
+/* CTA */
+.project-cta {
+  width: 100%;
+  padding: 0.85rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+}
+
+/* ── Why Section ── */
+.why-section {
+  margin-top: 2rem;
+}
+
+.why-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--mt-charcoal);
+  text-align: center;
+  margin: 0 0 2rem;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.why-card {
+  padding: 2rem 1.5rem;
+  border-radius: 18px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.why-card:hover {
+  transform: translateY(-3px);
+}
+
+.why-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(212, 160, 23, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+
+.why-card-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 0.6rem;
+}
+
+.why-card-desc {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .investment-marketplace {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .why-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

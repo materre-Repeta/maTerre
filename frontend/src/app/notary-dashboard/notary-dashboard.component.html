@@ -1,0 +1,93 @@
+<div class="notary-dashboard">
+
+  <!-- Profile Card -->
+  <div class="profile-card animate-in">
+    <div class="profile-top">
+      <div class="profile-info">
+        <div class="avatar">
+          <span class="avatar-initials">{{ getInitials(notaryProfile?.fullName) }}</span>
+        </div>
+        <div class="profile-text">
+          <h2 class="profile-name">{{ notaryProfile?.fullName }}</h2>
+          <p class="profile-mobile">
+            <span class="mobile-icon">📱</span>
+            Mobile Money: <strong>{{ notaryProfile?.mobileMoneyNumber }}</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-item">
+        <span class="stat-value">{{ formatCurrency(notaryProfile?.totalCommissionsEarned) }}</span>
+        <span class="stat-label">Commissions Totales</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-value">{{ notaryProfile?.missionsCompleted }}</span>
+        <span class="stat-label">Missions Terminées</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-value">{{ notaryProfile?.averageRating }} ★</span>
+        <span class="stat-label">Note Moyenne</span>
+      </div>
+    </div>
+
+    <!-- Withdraw CTA -->
+    <div class="withdraw-section">
+      <button class="btn btn-gold withdraw-btn">
+        <span class="btn-icon">💰</span>
+        Retirer via MoMo
+      </button>
+    </div>
+  </div>
+
+  <!-- Section Title -->
+  <div class="section-header animate-in stagger">
+    <h3 class="section-title">Missions d'Arbitrage</h3>
+    <span class="badge badge-yellow">{{ assignedRequests.length }} en attente</span>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="assignedRequests.length === 0" class="empty-state card animate-in stagger">
+    <div class="empty-icon">📋</div>
+    <p class="empty-text">Aucune mission en attente pour le moment.</p>
+  </div>
+
+  <!-- Missions Grid -->
+  <div *ngIf="assignedRequests.length > 0" class="missions-grid">
+    <div *ngFor="let req of assignedRequests; let i = index"
+         class="mission-card card animate-in stagger"
+         [style.animationDelay]="(i * 0.1 + 0.2) + 's'">
+
+      <div class="mission-header">
+        <div class="mission-title-group">
+          <h4 class="mission-title">{{ req.titleNumber }}</h4>
+          <span class="badge badge-gold">{{ req.status }}</span>
+        </div>
+      </div>
+
+      <div class="mission-details">
+        <div class="mission-detail-item">
+          <span class="detail-icon">📍</span>
+          <span class="detail-text">{{ req.location }}</span>
+        </div>
+        <div class="mission-detail-item">
+          <span class="detail-icon">📄</span>
+          <span class="detail-text">Frais: {{ formatCurrency(req.fee) }}</span>
+        </div>
+      </div>
+
+      <div class="mission-footer">
+        <div class="commission-block">
+          <span class="commission-label">Commission prévue (70%)</span>
+          <span class="commission-value">{{ formatCurrency(req.fee * 0.7) }}</span>
+        </div>
+        <button class="btn btn-primary mission-btn">Rédiger le Rapport</button>
+      </div>
+    </div>
+  </div>
+
+</div>

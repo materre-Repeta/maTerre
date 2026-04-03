@@ -1,0 +1,114 @@
+<!-- Hero Section -->
+<section class="sub-hero">
+  <div class="hero-inner animate-in">
+    <span class="hero-eyebrow">Investir en toute confiance</span>
+    <h1 class="hero-title">maTerre <span class="gold-text">Club Elite</span></h1>
+    <p class="hero-subtitle">
+      Rejoignez le cercle restreint des investisseurs qui s&eacute;curisent le patrimoine du Cameroun.
+    </p>
+    <div class="hero-divider"></div>
+  </div>
+</section>
+
+<!-- Pricing Cards -->
+<section class="pricing-section">
+  <div class="plans-grid">
+
+    <!-- FREE Plan -->
+    <div class="plan-card plan-free animate-in stagger" (click)="selectPlan('FREE')">
+      <div class="plan-header">
+        <h3 class="plan-name">{{ plans[0].name }}</h3>
+        <div class="plan-price-block">
+          <span class="plan-price">{{ plans[0].price }}</span>
+        </div>
+        <p class="plan-tagline">Pour d&eacute;couvrir la plateforme</p>
+      </div>
+      <ul class="feature-list">
+        <li *ngFor="let feat of plans[0].features" [class.disabled]="!feat.included">
+          <span class="check" [class.check-active]="feat.included" [class.check-inactive]="!feat.included">
+            {{ feat.included ? '\u2713' : '\u2713' }}
+          </span>
+          <span>{{ feat.text }}</span>
+        </li>
+      </ul>
+      <button class="btn btn-outline plan-cta" (click)="selectPlan('FREE'); $event.stopPropagation()">
+        {{ plans[0].btnText }}
+      </button>
+    </div>
+
+    <!-- CLUB Plan (Highlighted) -->
+    <div class="plan-card plan-club animate-in stagger" (click)="selectPlan('PREMIUM')">
+      <div class="badge badge-gold recommended-badge">RECOMMAND&Eacute;</div>
+      <div class="plan-header">
+        <h3 class="plan-name">{{ plans[1].name }}</h3>
+        <div class="plan-price-block">
+          <span class="plan-price">{{ plans[1].price }}</span>
+          <span class="plan-period">{{ plans[1].period }}</span>
+        </div>
+        <p class="plan-tagline">L'essentiel pour investir malin</p>
+      </div>
+      <ul class="feature-list">
+        <li *ngFor="let feat of plans[1].features" [class.disabled]="!feat.included">
+          <span class="check" [class.check-active]="feat.included" [class.check-inactive]="!feat.included">
+            {{ feat.included ? '\u2713' : '\u2713' }}
+          </span>
+          <span>{{ feat.text }}</span>
+        </li>
+      </ul>
+      <button class="btn btn-primary plan-cta" (click)="selectPlan('PREMIUM'); $event.stopPropagation()">
+        {{ plans[1].btnText }}
+      </button>
+    </div>
+
+    <!-- ELITE Plan -->
+    <div class="plan-card plan-elite animate-in stagger" (click)="selectPlan('ELITE')">
+      <div class="badge badge-yellow elite-badge">EXCLUSIF DIASPORA</div>
+      <div class="plan-header">
+        <h3 class="plan-name gold-text">{{ plans[2].name }}</h3>
+        <div class="plan-price-block">
+          <span class="plan-price">{{ plans[2].price }}</span>
+          <span class="plan-period">{{ plans[2].period }}</span>
+        </div>
+        <p class="plan-tagline">Le summum de l'investissement</p>
+      </div>
+      <ul class="feature-list">
+        <li *ngFor="let feat of plans[2].features">
+          <span class="check check-gold">&check;</span>
+          <span>{{ feat.text }}</span>
+        </li>
+      </ul>
+      <button class="btn btn-gold plan-cta" (click)="selectPlan('ELITE'); $event.stopPropagation()">
+        {{ plans[2].btnText }}
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- Diaspora Section -->
+<section class="diaspora-section animate-in">
+  <div class="diaspora-card">
+    <div class="diaspora-content">
+      <span class="diaspora-eyebrow">Un programme sur-mesure</span>
+      <h2>Vous &ecirc;tes de la <span class="gold-text">Diaspora</span> ?</h2>
+      <p>
+        Nous savons qu'investir &agrave; distance est stressant. Nos membres
+        <strong>Elite</strong> b&eacute;n&eacute;ficient d'un suivi par drone en temps r&eacute;el
+        et d'un conseiller juridique qui v&eacute;rifie chaque acte notari&eacute; en votre nom.
+      </p>
+      <ul class="diaspora-benefits">
+        <li><span class="check check-gold">&check;</span> Visites terrain par drone, en direct depuis votre salon</li>
+        <li><span class="check check-gold">&check;</span> Conciergerie WhatsApp disponible 7j/7</li>
+        <li><span class="check check-gold">&check;</span> Conseiller juridique d&eacute;di&eacute; pour chaque transaction</li>
+        <li><span class="check check-gold">&check;</span> Acc&egrave;s exclusif aux projets Haute-Plus-Value</li>
+      </ul>
+      <button class="btn btn-gold" (click)="selectPlan('ELITE')">
+        Rejoindre l'Elite Diaspora
+      </button>
+    </div>
+    <div class="diaspora-visual">
+      <div class="globe-icon">🌍</div>
+      <div class="globe-ring"></div>
+    </div>
+  </div>
+</section>

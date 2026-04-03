@@ -1,0 +1,125 @@
+<section class="investor-dashboard">
+
+  <!-- Section Header -->
+  <div class="section-header animate-in">
+    <span class="badge badge-gold">PORTEFEUILLE</span>
+    <h1 class="section-title">Mon Portefeuille</h1>
+    <p class="section-subtitle">Suivez la croissance de votre patrimoine foncier au Cameroun.</p>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row animate-in stagger">
+
+    <!-- Total m2 -->
+    <div class="stat-card card">
+      <div class="stat-icon-wrap">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--mt-emerald)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 12h18"/><path d="M12 3v18"/>
+        </svg>
+      </div>
+      <span class="stat-label">SURFACE TOTALE</span>
+      <span class="stat-number">{{ stats.totalM2Owned }} <small>m<sup>2</sup></small></span>
+      <span class="stat-sub">{{ stats.projectsCount }} projets actifs</span>
+    </div>
+
+    <!-- Capital Invested -->
+    <div class="stat-card card">
+      <div class="stat-icon-wrap stat-icon-gold">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--mt-gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/>
+        </svg>
+      </div>
+      <span class="stat-label">CAPITAL INVESTI</span>
+      <span class="stat-number stat-number-dark">{{ formatCurrency(stats.totalInvested) }}</span>
+      <span class="stat-sub">Total engage</span>
+    </div>
+
+    <!-- Estimated Valuation -->
+    <div class="stat-card card">
+      <div class="stat-icon-wrap stat-icon-emerald">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--mt-emerald)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
+        </svg>
+      </div>
+      <span class="stat-label">VALORISATION ESTIMEE</span>
+      <span class="stat-number stat-number-emerald">{{ formatCurrency(stats.estimatedValuation) }}</span>
+      <span class="stat-sub">Apres titrage</span>
+    </div>
+
+    <!-- Gain Card (highlighted) -->
+    <div class="stat-card stat-card-gain">
+      <div class="stat-icon-wrap stat-icon-gain">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+      </div>
+      <span class="stat-label">GAIN ESTIME</span>
+      <span class="stat-number stat-number-gain">+{{ getGainPercentage() | number:'1.0-0' }}%</span>
+      <span class="stat-sub">{{ formatCurrency(stats.estimatedValuation - stats.totalInvested) }}</span>
+    </div>
+
+  </div>
+
+  <!-- Investments List -->
+  <div class="investments-section">
+    <h2 class="investments-title animate-in">Mes Co-Investissements Actifs</h2>
+
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Chargement du portefeuille...</p>
+    </div>
+
+    <div *ngIf="!isLoading" class="investments-list">
+      <div *ngFor="let inv of myInvestments; let i = index" class="investment-card animate-in stagger" [style.animation-delay]="(i * 0.15) + 's'">
+
+        <!-- Gradient Image Placeholder -->
+        <div class="inv-image">
+          <div class="inv-image-gradient">
+            <span class="inv-image-location">{{ inv.location }}</span>
+          </div>
+        </div>
+
+        <!-- Details -->
+        <div class="inv-details">
+          <div class="inv-header-row">
+            <div>
+              <h3 class="inv-location">{{ inv.location }}</h3>
+              <p class="inv-meta">
+                <strong>{{ formatCurrency(inv.amountInvested) }}</strong>
+                <span class="inv-meta-sep"></span>
+                {{ inv.m2Equivalent }} m<sup>2</sup>
+              </p>
+            </div>
+            <span class="badge badge-green">{{ inv.status }}</span>
+          </div>
+
+          <!-- Progress -->
+          <div class="inv-progress-section">
+            <div class="inv-progress-labels">
+              <span class="inv-step-label">{{ getStepLabel(inv.currentStep) }}</span>
+              <span class="inv-progress-pct">{{ inv.progress }}%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-bar-fill inv-progress-fill" [style.width]="inv.progress + '%'"></div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="inv-footer">
+            <div class="inv-footer-info">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--mt-grey-warm)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Gere par maTerre Partner Notary</span>
+            </div>
+            <button class="btn btn-outline inv-detail-btn">Voir Details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Explore CTA -->
+  <div *ngIf="!isLoading" class="explore-cta animate-in stagger">
+    <button class="btn btn-primary explore-btn">Explorer de nouvelles opportunites</button>
+  </div>
+
+</section>

@@ -1,0 +1,469 @@
+/* ===================== HERO ===================== */
+.sub-hero {
+  background: linear-gradient(135deg, var(--mt-forest-deep) 0%, var(--mt-charcoal) 100%);
+  padding: 5rem 2rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.sub-hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(212, 160, 23, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.sub-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(45, 106, 79, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mt-gold);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--mt-cream);
+  margin: 0 0 1rem;
+  line-height: 1.15;
+}
+
+.gold-text {
+  color: var(--mt-gold);
+}
+
+.hero-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: var(--mt-grey-warm);
+  line-height: 1.6;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.hero-divider {
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--mt-gold), var(--mt-gold-light));
+  margin: 2rem auto 0;
+  border-radius: 2px;
+}
+
+/* ===================== PRICING ===================== */
+.pricing-section {
+  padding: 4rem 2rem;
+  background: var(--mt-cream);
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+/* Card base */
+.plan-card {
+  position: relative;
+  border-radius: 16px;
+  padding: 2.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.plan-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+}
+
+/* FREE card */
+.plan-free {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(45, 106, 79, 0.2);
+}
+
+/* CLUB card (highlighted) */
+.plan-club {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 0 12px 40px rgba(45, 106, 79, 0.15);
+  transform: scale(1.03);
+  z-index: 2;
+}
+
+.plan-club::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 18px;
+  background: linear-gradient(160deg, var(--mt-emerald), var(--mt-gold-light), var(--mt-emerald));
+  z-index: -1;
+}
+
+.plan-club:hover {
+  transform: scale(1.05);
+}
+
+/* ELITE card */
+.plan-elite {
+  background: linear-gradient(165deg, var(--mt-charcoal) 0%, var(--mt-forest-deep) 100%);
+  color: var(--mt-cream);
+  border: 1.5px solid rgba(212, 160, 23, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  overflow: visible;
+  z-index: 1;
+}
+
+.plan-elite::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle at top right, rgba(212, 160, 23, 0.12) 0%, transparent 70%);
+  border-radius: 0 16px 0 0;
+  pointer-events: none;
+}
+
+.plan-elite:hover {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+/* Badges */
+.recommended-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  padding: 6px 20px;
+  white-space: nowrap;
+  z-index: 3;
+}
+
+.elite-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  padding: 6px 20px;
+  white-space: nowrap;
+  z-index: 10;
+  background: linear-gradient(135deg, var(--mt-gold) 0%, #F2CC5B 100%);
+  color: var(--mt-forest-deep);
+  font-weight: 700;
+  border-radius: 9999px;
+  box-shadow: 0 4px 15px rgba(212, 160, 23, 0.4);
+}
+
+/* Plan header */
+.plan-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(139, 139, 158, 0.15);
+}
+
+.plan-name {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0 0 1rem;
+  text-transform: uppercase;
+}
+
+.plan-free .plan-name {
+  color: var(--mt-emerald);
+}
+
+.plan-club .plan-name {
+  color: var(--mt-forest);
+}
+
+.plan-price-block {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.plan-price {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.plan-elite .plan-price {
+  color: var(--mt-gold);
+}
+
+.plan-period {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--mt-grey-warm);
+}
+
+.plan-tagline {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--mt-grey-warm);
+  margin: 0;
+}
+
+/* Feature list */
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 auto;
+  flex: 1;
+}
+
+.feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0.55rem 0;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.feature-list li.disabled {
+  opacity: 0.4;
+}
+
+.check {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.check-active {
+  background: rgba(45, 106, 79, 0.12);
+  color: var(--mt-emerald);
+}
+
+.check-inactive {
+  background: rgba(139, 139, 158, 0.1);
+  color: var(--mt-grey-warm);
+}
+
+.check-gold {
+  background: rgba(212, 160, 23, 0.15);
+  color: var(--mt-gold);
+}
+
+.plan-elite .check-active {
+  background: rgba(212, 160, 23, 0.15);
+  color: var(--mt-gold);
+}
+
+/* CTA */
+.plan-cta {
+  width: 100%;
+  margin-top: 2rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+/* ===================== DIASPORA ===================== */
+.diaspora-section {
+  padding: 4rem 2rem 5rem;
+  background: var(--mt-cream);
+}
+
+.diaspora-card {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  background: linear-gradient(155deg, var(--mt-charcoal) 0%, var(--mt-forest-deep) 100%);
+  border-radius: 20px;
+  padding: 3.5rem;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(212, 160, 23, 0.15);
+}
+
+.diaspora-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(212, 160, 23, 0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.diaspora-content {
+  flex: 1.2;
+  position: relative;
+  z-index: 1;
+}
+
+.diaspora-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mt-gold);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.diaspora-content h2 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--mt-cream);
+  margin: 0 0 1rem;
+}
+
+.diaspora-content p {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--mt-grey-warm);
+  line-height: 1.7;
+  margin: 0 0 1.5rem;
+}
+
+.diaspora-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+}
+
+.diaspora-benefits li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.45rem 0;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--mt-cream);
+}
+
+.diaspora-visual {
+  flex: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.globe-icon {
+  font-size: 6rem;
+  position: relative;
+  z-index: 1;
+}
+
+.globe-ring {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border: 2px solid rgba(212, 160, 23, 0.2);
+  border-radius: 50%;
+  animation: pulse-ring 3s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.2;
+  }
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 900px) {
+  .plans-grid {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+  }
+
+  .plan-club {
+    transform: scale(1);
+    order: -1;
+  }
+
+  .plan-club:hover {
+    transform: translateY(-4px);
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .diaspora-card {
+    flex-direction: column;
+    padding: 2.5rem;
+    text-align: center;
+  }
+
+  .diaspora-benefits li {
+    justify-content: center;
+  }
+
+  .diaspora-content {
+    text-align: center;
+  }
+}

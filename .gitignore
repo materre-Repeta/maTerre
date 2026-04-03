@@ -1,0 +1,24 @@
+# Dependencies
+frontend/node_modules/
+backend/target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Build
+frontend/dist/
+*.class
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.prod
+
+# Sharp (dev dependency for icon generation)
+frontend/src/assets/icons/test-*.jpg

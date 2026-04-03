@@ -1,0 +1,127 @@
+<div class="titling-tracker">
+
+  <!-- Section Header -->
+  <div class="section-header animate-in">
+    <div class="header-icon">⚡</div>
+    <div class="header-text">
+      <h2 class="header-title">Accélérateur Administratif</h2>
+      <p class="header-subtitle">Suivez l'évolution de votre dossier de titrage au MINDCAF en temps réel.</p>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading-state animate-in">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Chargement de vos dossiers...</p>
+  </div>
+
+  <!-- Main Tracking View -->
+  <div *ngIf="!isLoading && selectedRequest">
+
+    <!-- Stepper Section -->
+    <div class="stepper-card card animate-in stagger">
+      <div class="stepper-container">
+        <!-- Background Line -->
+        <div class="stepper-track">
+          <div class="stepper-track-fill" [style.width]="getProgressWidth()"></div>
+        </div>
+
+        <!-- Step Items -->
+        <div class="stepper-steps">
+          <div *ngFor="let step of steps; let i = index"
+               class="step-item"
+               [class.step-completed]="isStepCompleted(step.key)"
+               [class.step-current]="isCurrentStep(step.key)">
+            <div class="step-circle">
+              <span *ngIf="isStepCompleted(step.key) && !isCurrentStep(step.key)" class="step-check">✓</span>
+              <span *ngIf="isCurrentStep(step.key)" class="step-icon-active">{{ step.icon }}</span>
+              <span *ngIf="!isStepCompleted(step.key)" class="step-icon-pending">{{ step.icon }}</span>
+            </div>
+            <span class="step-label">{{ step.label }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Request Info Card -->
+    <div class="request-card card animate-in stagger">
+      <div class="request-header">
+        <div class="request-info">
+          <h3 class="request-location">{{ selectedRequest.propertyLocation }}</h3>
+          <div class="request-meta">
+            <span class="meta-item">
+              <span class="meta-icon">🏠</span>
+              {{ getTypeLabel(selectedRequest.type) }}
+            </span>
+            <span class="meta-divider">·</span>
+            <span class="meta-item">
+              <span class="meta-icon">📐</span>
+              {{ selectedRequest.surfaceArea }} m²
+            </span>
+          </div>
+        </div>
+        <span class="badge"
+              [class.badge-yellow]="selectedRequest.status === 'IN_PROGRESS'"
+              [class.badge-green]="selectedRequest.status === 'COMPLETED'">
+          {{ getStatusLabel(selectedRequest.status) }}
+        </span>
+      </div>
+
+      <!-- Progress Summary -->
+      <div class="progress-summary">
+        <div class="progress-label">
+          <span>Progression</span>
+          <span class="progress-percent">{{ getProgressWidth() }}</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar-fill" [style.width]="getProgressWidth()"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Latest Update -->
+    <div *ngIf="logs.length > 0" class="latest-update card animate-in stagger">
+      <div class="update-accent"></div>
+      <div class="update-content">
+        <div class="update-header">
+          <span class="update-badge badge badge-green">Dernière Mise à Jour</span>
+          <span class="update-date">{{ logs[0].createdAt | date:'mediumDate' }}</span>
+        </div>
+        <h4 class="update-step-label">{{ getStepLabel(logs[0].step) }}</h4>
+        <p class="update-comment">{{ logs[0].adminComment }}</p>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="actions-row animate-in stagger">
+      <button class="btn btn-gold action-btn">
+        <span class="action-icon">➕</span>
+        Nouvelle Demande
+      </button>
+      <button class="btn btn-outline action-btn">
+        <span class="action-icon">💬</span>
+        Contacter l'Agent
+      </button>
+    </div>
+
+    <!-- History Timeline -->
+    <div *ngIf="logs.length > 1" class="history-section animate-in stagger">
+      <h3 class="history-title">Historique du Dossier</h3>
+      <div class="timeline">
+        <div *ngFor="let log of logs.slice(1); let last = last"
+             class="timeline-item"
+             [class.timeline-item-last]="last">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <span class="timeline-step">{{ getStepLabel(log.step) }}</span>
+              <span class="timeline-date">{{ log.createdAt | date:'mediumDate' }}</span>
+            </div>
+            <p class="timeline-comment">{{ log.adminComment }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

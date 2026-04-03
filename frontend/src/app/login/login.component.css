@@ -1,0 +1,394 @@
+/* ───────────────────────────────────────────
+   Login Component — Luxury African Fintech
+   ─────────────────────────────────────────── */
+
+/* Backdrop */
+.login-wrapper {
+  width: 100%;
+}
+
+/* Card */
+.login-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl),
+              0 0 0 1px rgba(27, 67, 50, 0.08);
+  animation: cardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Gradient header strip */
+.login-header {
+  position: relative;
+  height: 8px;
+  background: linear-gradient(
+    135deg,
+    var(--mt-forest) 0%,
+    var(--mt-emerald) 45%,
+    var(--mt-gold) 100%
+  );
+}
+
+.header-pattern {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 20px,
+    rgba(255, 255, 255, 0.08) 20px,
+    rgba(255, 255, 255, 0.08) 21px
+  );
+}
+
+/* Logo */
+.login-logo-wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+}
+
+.login-logo {
+  height: 90px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(27, 67, 50, 0.12));
+  transition: transform 0.3s ease;
+}
+
+.login-logo:hover {
+  transform: scale(1.05);
+}
+
+/* Body */
+.login-body {
+  padding: 1.5rem 2rem 2rem;
+}
+
+/* Title */
+.login-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--mt-charcoal);
+  text-align: center;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.login-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--mt-grey-warm);
+  text-align: center;
+  margin: 0 0 2rem;
+  line-height: 1.5;
+}
+
+/* Input label */
+.input-label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--mt-charcoal);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* ── Phone input group ── */
+.phone-input-group {
+  display: flex;
+  align-items: stretch;
+  border: 2px solid rgba(45, 106, 79, 0.15);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  background: var(--mt-cream);
+  margin-bottom: 1.5rem;
+}
+
+.phone-input-group:focus-within {
+  border-color: var(--mt-emerald);
+  box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.1);
+}
+
+.phone-prefix {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.85rem;
+  background: rgba(27, 67, 50, 0.06);
+  border-right: 2px solid rgba(45, 106, 79, 0.1);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.flag-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.prefix-text {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--mt-forest);
+}
+
+.phone-input {
+  flex: 1;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding: 0.85rem 0.75rem !important;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--mt-charcoal);
+  letter-spacing: 0.06em;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.phone-input::placeholder {
+  color: var(--mt-grey-warm);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* ── OTP digit boxes ── */
+.otp-boxes {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.otp-digit {
+  width: 48px;
+  height: 56px;
+  border: 2px solid rgba(45, 106, 79, 0.15);
+  border-radius: var(--radius-md);
+  background: var(--mt-cream);
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--mt-charcoal);
+  caret-color: var(--mt-gold);
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.otp-digit:focus {
+  border-color: var(--mt-emerald);
+  box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.1);
+  transform: translateY(-2px);
+}
+
+.otp-digit.filled {
+  border-color: var(--mt-forest);
+  background: rgba(27, 67, 50, 0.04);
+}
+
+/* ── Primary action button ── */
+.login-btn {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-md);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-btn:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.login-btn:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.login-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Loader */
+.loader-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── OTP actions ── */
+.otp-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.25rem;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--mt-grey-warm);
+  cursor: pointer;
+  padding: 0.25rem 0;
+  transition: color 0.2s ease;
+}
+
+.link-btn:hover {
+  color: var(--mt-charcoal);
+}
+
+.link-btn--gold {
+  color: var(--mt-gold);
+  font-weight: 600;
+}
+
+.link-btn--gold:hover {
+  color: var(--mt-forest);
+}
+
+/* ── Hint ── */
+.login-hint {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--mt-grey-warm);
+  text-align: center;
+  margin-top: 1.25rem;
+  margin-bottom: 0;
+}
+
+.login-hint strong {
+  color: var(--mt-emerald);
+}
+
+/* ── Error bar ── */
+.error-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding: 0.75rem 1rem;
+  background: rgba(198, 40, 40, 0.06);
+  border: 1px solid rgba(198, 40, 40, 0.15);
+  border-radius: var(--radius-sm);
+  color: var(--mt-red);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  animation: errorSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes errorSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Shake on error */
+.login-card.shake {
+  animation: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-3px); }
+  40%, 60% { transform: translateX(3px); }
+}
+
+/* ── Footer ── */
+.login-footer {
+  padding: 1rem 2rem;
+  text-align: center;
+  border-top: 1px solid rgba(45, 106, 79, 0.08);
+  background: rgba(250, 246, 240, 0.5);
+}
+
+.login-footer span {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--mt-grey-warm);
+  letter-spacing: 0.03em;
+}
+
+/* ── Step transitions ── */
+.step-container {
+  animation: stepIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes stepIn {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .login-body {
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+
+  .login-title {
+    font-size: 1.3rem;
+  }
+
+  .otp-digit {
+    width: 42px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+
+  .otp-boxes {
+    gap: 0.4rem;
+  }
+}

@@ -1,0 +1,121 @@
+<div class="login-wrapper">
+  <div class="login-card animate-in" [class.shake]="errorMessage">
+
+    <!-- Gradient header strip -->
+    <div class="login-header">
+      <div class="header-pattern"></div>
+    </div>
+
+    <!-- Logo -->
+    <div class="login-logo-wrap">
+      <img src="assets/icons/logo.png" alt="maTerre" class="login-logo" />
+    </div>
+
+    <!-- Body -->
+    <div class="login-body">
+
+      <!-- Title & subtitle -->
+      <h2 class="login-title">
+        {{ step === 'PHONE' ? 'Bienvenue sur maTerre' : 'Vérification' }}
+      </h2>
+      <p class="login-subtitle">
+        {{ step === 'PHONE'
+           ? "Entrez votre numéro pour sécuriser vos transactions foncières."
+           : "Saisissez le code à 6 chiffres envoyé par WhatsApp ou SMS." }}
+      </p>
+
+      <!-- ── Step 1: Phone ── -->
+      <div *ngIf="step === 'PHONE'" class="step-container step-phone">
+
+        <label class="input-label">Numéro de téléphone</label>
+        <div class="phone-input-group">
+          <div class="phone-prefix">
+            <span class="flag-icon">🇨🇲</span>
+            <span class="prefix-text">+237</span>
+          </div>
+          <input
+            type="tel"
+            class="input phone-input"
+            [(ngModel)]="phoneNumber"
+            placeholder="6XX XXX XXX"
+            maxlength="9"
+            autocomplete="tel"
+          />
+        </div>
+
+        <button
+          class="btn btn-gold login-btn"
+          (click)="sendOtp()"
+          [disabled]="isLoading || !phoneNumber"
+        >
+          <span *ngIf="!isLoading">Recevoir mon code</span>
+          <span *ngIf="isLoading" class="loader-wrap">
+            <span class="spinner"></span>
+            Envoi en cours...
+          </span>
+        </button>
+
+        <p class="login-hint">
+          Vérification gratuite via <strong>WhatsApp</strong> ou <strong>SMS</strong>.
+        </p>
+      </div>
+
+      <!-- ── Step 2: OTP ── -->
+      <div *ngIf="step === 'OTP'" class="step-container step-otp">
+
+        <label class="input-label">Code de vérification</label>
+        <div class="otp-boxes" (paste)="onOtpPaste($event)">
+          <input
+            *ngFor="let d of otpDigits; let i = index"
+            type="text"
+            inputmode="numeric"
+            maxlength="1"
+            class="otp-digit"
+            [value]="otpDigits[i]"
+            (input)="onOtpDigitInput($event, i)"
+            (keydown)="onOtpKeydown($event, i)"
+            [class.filled]="otpDigits[i]"
+          />
+        </div>
+
+        <button
+          class="btn btn-gold login-btn"
+          (click)="verifyOtp()"
+          [disabled]="isLoading || otp.length < 6"
+        >
+          <span *ngIf="!isLoading">Se connecter</span>
+          <span *ngIf="isLoading" class="loader-wrap">
+            <span class="spinner"></span>
+            Validation...
+          </span>
+        </button>
+
+        <div class="otp-actions">
+          <button class="link-btn" (click)="reset()">
+            ← Changer de numéro
+          </button>
+          <button class="link-btn link-btn--gold" (click)="sendOtp()">
+            Renvoyer le code
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Error ── -->
+      <div *ngIf="errorMessage" class="error-bar animate-in">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="7.5" stroke="currentColor"/>
+          <path d="M8 4.5v4M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="login-footer">
+      <span>Plateforme sécurisée de gestion foncière</span>
+    </div>
+
+  </div>
+</div>
+

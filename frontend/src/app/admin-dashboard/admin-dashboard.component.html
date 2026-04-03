@@ -1,0 +1,133 @@
+<div class="admin-dashboard">
+
+  <!-- Header -->
+  <div class="admin-header animate-in">
+    <div class="header-content">
+      <div class="header-icon">&#128737;</div>
+      <div>
+        <h1 class="header-title">Command Center</h1>
+        <p class="header-subtitle">Gestion globale des flux d'arbitrage et des investissements.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="loading-spinner"></div>
+    <p>Chargement des donn&eacute;es...</p>
+  </div>
+
+  <!-- Stats Grid -->
+  <div *ngIf="!isLoading" class="stats-grid animate-in stagger">
+    <div class="stat-card">
+      <div class="stat-icon">&#128101;</div>
+      <div class="stat-content">
+        <span class="stat-label">UTILISATEURS</span>
+        <span class="stat-value">{{ stats.totalUsers | number }}</span>
+        <span class="stat-trend trend-up">+12% ce mois</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card-alert">
+      <div class="stat-icon">&#128196;</div>
+      <div class="stat-content">
+        <span class="stat-label">AUDITS EN ATTENTE</span>
+        <span class="stat-value stat-value-alert">{{ stats.pendingAudits }}</span>
+        <span class="stat-trend trend-warn">N&eacute;cessitent action</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card-success">
+      <div class="stat-icon">&#9878;</div>
+      <div class="stat-content">
+        <span class="stat-label">NOTAIRES PARTENAIRES</span>
+        <span class="stat-value">{{ stats.totalNotaries }}</span>
+        <span class="stat-trend trend-up">R&eacute;seau actif</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div *ngIf="!isLoading" class="tab-bar animate-in">
+    <button class="tab-pill"
+            [class.tab-active]="activeTab === 'AUDITS'"
+            (click)="activeTab = 'AUDITS'">
+      &#128196; Audits &amp; Notaires
+    </button>
+    <button class="tab-pill"
+            [class.tab-active]="activeTab === 'PROJECTS'"
+            (click)="activeTab = 'PROJECTS'">
+      &#128188; Projets de Financement
+    </button>
+    <button class="tab-pill"
+            [class.tab-active]="activeTab === 'USERS'"
+            (click)="activeTab = 'USERS'">
+      &#128101; Utilisateurs
+    </button>
+  </div>
+
+  <!-- Tab Content: AUDITS -->
+  <div *ngIf="!isLoading && activeTab === 'AUDITS'" class="tab-content animate-in">
+    <div class="section-header">
+      <h2>Pipeline d'Arbitrage Express</h2>
+      <span class="badge badge-yellow">{{ pendingRequests.length }} en attente</span>
+    </div>
+
+    <div class="table-wrapper" *ngIf="pendingRequests.length > 0">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Titre Foncier</th>
+            <th>Demandeur</th>
+            <th>Date</th>
+            <th>Assigner Notaire</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let req of pendingRequests; let odd = odd" [class.row-alt]="odd">
+            <td>
+              <span class="title-ref">{{ req.titleNumber }}</span>
+            </td>
+            <td>{{ req.requester }}</td>
+            <td>
+              <span class="date-cell">{{ req.date }}</span>
+            </td>
+            <td class="action-cell">
+              <select #notarySelect class="notary-select">
+                <option value="">-- Choisir un Notaire --</option>
+                <option *ngFor="let n of notaries" [value]="n.id">{{ n.fullName }}</option>
+              </select>
+              <button class="btn btn-primary assign-btn"
+                      (click)="assignNotary(req.id, notarySelect.value)"
+                      [disabled]="!notarySelect.value">
+                Assigner
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="pendingRequests.length === 0" class="empty-state">
+      <div class="empty-icon">&#10003;</div>
+      <p>Tous les audits ont &eacute;t&eacute; assign&eacute;s. Aucune action requise.</p>
+    </div>
+  </div>
+
+  <!-- Tab Content: PROJECTS -->
+  <div *ngIf="!isLoading && activeTab === 'PROJECTS'" class="tab-content animate-in">
+    <div class="placeholder-state">
+      <div class="placeholder-icon">&#128188;</div>
+      <h3>Bient&ocirc;t disponible</h3>
+      <p>Gestion des pools de co-investissement en cours de d&eacute;ploiement.</p>
+    </div>
+  </div>
+
+  <!-- Tab Content: USERS -->
+  <div *ngIf="!isLoading && activeTab === 'USERS'" class="tab-content animate-in">
+    <div class="placeholder-state">
+      <div class="placeholder-icon">&#128101;</div>
+      <h3>Bient&ocirc;t disponible</h3>
+      <p>Annuaire global des utilisateurs et abonnements Elite.</p>
+    </div>
+  </div>
+
+</div>

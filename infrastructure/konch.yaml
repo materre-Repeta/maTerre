@@ -1,0 +1,21 @@
+project: materre
+group: materre-repeta
+compose_file: docker-compose.prod.yml       
+
+services:
+  backend:
+    image: ghcr.io/materre-repeta/backend
+    tag: develop
+    poll_interval: 60
+  frontend:
+    image: ghcr.io/materre-repeta/frontend
+    tag: develop
+    poll_interval: 60
+
+infra:
+  postgres:
+    image: postgres:16-alpine
+    auto_update: false
+  traefik:
+    image: traefik:v3.0
+    auto_update: false

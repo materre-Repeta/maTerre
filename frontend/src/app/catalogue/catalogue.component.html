@@ -1,0 +1,101 @@
+<section class="catalogue-section">
+
+  <!-- Section Header -->
+  <div class="catalogue-header animate-in">
+    <div class="header-top">
+      <h2>Catalogue Certifié</h2>
+      <span class="badge badge-gold filter-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        Filtre Zéro Risque
+      </span>
+    </div>
+    <p class="header-subtitle">
+      Propriétés vérifiées par nos arbitres fonciers. Chaque titre a été authentifié auprès de la conservation foncière.
+    </p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-grid grid-2">
+    <div class="skeleton-card" *ngFor="let i of [1, 2, 3, 4]">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-body">
+        <div class="skeleton-line skeleton-line-short"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line skeleton-line-medium"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Property Grid -->
+  <div *ngIf="!isLoading && properties.length > 0" class="property-grid grid-2 stagger">
+    <article
+      *ngFor="let property of properties; let i = index"
+      class="property-card"
+    >
+      <!-- Image Placeholder with Gradient -->
+      <div class="card-image" [style.background]="getGradient(i)">
+        <span class="card-initials">{{ getInitials(property) }}</span>
+        <div class="card-image-overlay"></div>
+        <span class="badge badge-green verified-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Titre Vérifié
+        </span>
+      </div>
+
+      <!-- Card Body -->
+      <div class="card-body">
+        <!-- Location -->
+        <div class="card-location">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span>{{ property.locationQuarter }}, {{ property.locationCity }}</span>
+        </div>
+
+        <!-- Details Row -->
+        <div class="card-details">
+          <div class="detail-item">
+            <span class="detail-label">Surface</span>
+            <span class="detail-value">{{ property.surfaceArea }} m²</span>
+          </div>
+          <div class="detail-divider"></div>
+          <div class="detail-item">
+            <span class="detail-label">Titre</span>
+            <span class="detail-value">{{ property.titleNumber }}</span>
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div class="card-price">
+          {{ formatPrice(property.price) }}
+        </div>
+
+        <!-- CTA -->
+        <button class="btn btn-primary btn-cta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          Contacter l'Arbitre
+        </button>
+      </div>
+    </article>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && properties.length === 0" class="empty-state animate-in">
+    <div class="empty-icon">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </div>
+    <h3>Aucune propriété certifiée</h3>
+    <p>Les propriétés vérifiées apparaîtront ici dès qu'elles auront passé le processus d'arbitrage.</p>
+  </div>
+
+</section>

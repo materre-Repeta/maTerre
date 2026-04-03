@@ -1,0 +1,301 @@
+/* ═══════════════════════════════════════════════════════════
+   Catalogue Certifié — Luxury African Fintech
+   ═══════════════════════════════════════════════════════════ */
+
+.catalogue-section {
+  padding: var(--space-3xl) var(--space-xl);
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+/* ── Section Header ── */
+
+.catalogue-header {
+  margin-bottom: var(--space-2xl);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-sm);
+}
+
+.catalogue-header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: var(--mt-forest);
+  letter-spacing: -0.03em;
+}
+
+.filter-badge {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.header-subtitle {
+  font-family: var(--font-body);
+  color: var(--mt-grey-warm);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 580px;
+}
+
+/* ── Property Card ── */
+
+.property-card {
+  background: var(--surface-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--duration-normal) var(--ease-out-expo),
+    box-shadow var(--duration-normal) var(--ease-out-expo);
+}
+
+.property-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ── Card Image Area ── */
+
+.card-image {
+  position: relative;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card-initials {
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.12);
+  letter-spacing: 0.1em;
+  user-select: none;
+  z-index: 1;
+}
+
+.card-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    rgba(13, 40, 24, 0.4) 100%
+  );
+  pointer-events: none;
+}
+
+.verified-badge {
+  position: absolute;
+  top: var(--space-md);
+  left: var(--space-md);
+  z-index: 2;
+  background: rgba(45, 106, 79, 0.15) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(45, 106, 79, 0.2);
+  color: var(--mt-mint) !important;
+  font-size: 0.7rem;
+}
+
+/* ── Card Body ── */
+
+.card-body {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.card-location {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--mt-charcoal);
+}
+
+.card-location svg {
+  color: var(--mt-emerald);
+  flex-shrink: 0;
+}
+
+/* ── Details Row ── */
+
+.card-details {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detail-label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mt-grey-warm);
+  font-weight: 500;
+}
+
+.detail-value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--mt-charcoal);
+}
+
+.detail-divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(27, 67, 50, 0.1);
+  flex-shrink: 0;
+}
+
+/* ── Price ── */
+
+.card-price {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--mt-forest);
+  letter-spacing: -0.02em;
+}
+
+/* ── CTA Button ── */
+
+.btn-cta {
+  width: 100%;
+  margin-top: var(--space-xs);
+}
+
+/* ── Loading Skeleton ── */
+
+.loading-grid {
+  opacity: 0.6;
+}
+
+.skeleton-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface-card);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.skeleton-image {
+  height: 200px;
+  background: linear-gradient(
+    90deg,
+    rgba(27, 67, 50, 0.06) 25%,
+    rgba(27, 67, 50, 0.12) 50%,
+    rgba(27, 67, 50, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease infinite;
+}
+
+.skeleton-body {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.skeleton-line {
+  height: 14px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    90deg,
+    rgba(27, 67, 50, 0.06) 25%,
+    rgba(27, 67, 50, 0.1) 50%,
+    rgba(27, 67, 50, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease infinite;
+}
+
+.skeleton-line-short {
+  width: 40%;
+}
+
+.skeleton-line-medium {
+  width: 65%;
+}
+
+/* ── Empty State ── */
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-3xl) var(--space-xl);
+}
+
+.empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-full);
+  background: rgba(45, 106, 79, 0.08);
+  color: var(--mt-sage);
+  margin-bottom: var(--space-lg);
+}
+
+.empty-state h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--mt-charcoal);
+  margin-bottom: var(--space-sm);
+}
+
+.empty-state p {
+  font-family: var(--font-body);
+  color: var(--mt-grey-warm);
+  font-size: 1rem;
+  max-width: 420px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 768px) {
+  .catalogue-section {
+    padding: var(--space-2xl) var(--space-md);
+  }
+
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card-image {
+    height: 160px;
+  }
+
+  .card-initials {
+    font-size: 2.4rem;
+  }
+
+  .card-price {
+    font-size: 1.15rem;
+  }
+}

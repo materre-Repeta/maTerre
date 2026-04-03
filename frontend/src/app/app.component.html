@@ -1,0 +1,390 @@
+<div class="app-shell">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="header" [class.scrolled]="headerScrolled">
+    <div class="header-inner">
+      <!-- Logo -->
+      <a class="logo" (click)="navigate('VERIFY')">
+        <img src="assets/icons/icon.png" alt="maTerre" class="logo-img">
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="nav-desktop">
+        <ng-container *ngFor="let item of navItems">
+          <button *ngIf="isNavVisible(item)"
+                  class="nav-link"
+                  [class.active]="currentView === item.view"
+                  (click)="navigate(item.view)">
+            {{ item.label }}
+          </button>
+        </ng-container>
+        <button class="btn btn-gold btn-sm" (click)="navigate('CLUB')">
+          <span>★</span> Club Elite
+        </button>
+      </nav>
+
+      <!-- Auth + Mobile -->
+      <div class="header-actions">
+        <button *ngIf="showInstallButton" (click)="installPwa()" class="btn btn-outline btn-sm">
+          Installer
+        </button>
+        <button *ngIf="!isLoggedIn" (click)="showLogin = true" class="btn btn-primary btn-sm">
+          Se connecter
+        </button>
+        <div *ngIf="isLoggedIn" class="user-menu">
+          <div class="user-avatar" (click)="logout()">
+            <span>👤</span>
+          </div>
+        </div>
+        <button class="hamburger" [class.open]="mobileMenuOpen" (click)="mobileMenuOpen = !mobileMenuOpen">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ MOBILE MENU ═══ -->
+  <div class="mobile-menu" [class.open]="mobileMenuOpen">
+    <div class="mobile-menu-inner">
+      <ng-container *ngFor="let item of navItems">
+        <button *ngIf="isNavVisible(item)"
+                class="mobile-nav-link"
+                [class.active]="currentView === item.view"
+                (click)="navigate(item.view)">
+          <span class="mobile-nav-icon">{{ item.icon }}</span>
+          {{ item.label }}
+        </button>
+      </ng-container>
+      <button class="mobile-nav-link gold" (click)="navigate('CLUB')">
+        <span class="mobile-nav-icon">★</span>
+        Club Elite
+      </button>
+      <div class="mobile-menu-footer">
+        <button *ngIf="!isLoggedIn" (click)="showLogin = true; mobileMenuOpen = false" class="btn btn-primary" style="width:100%;">
+          Se connecter
+        </button>
+        <button *ngIf="isLoggedIn" (click)="logout(); mobileMenuOpen = false" class="btn btn-outline" style="width:100%;">
+          Déconnexion
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <main class="main-content" [class.transitioning]="viewTransition">
+
+    <!-- ─── VERIFY (Hero) ─── -->
+    <section *ngIf="currentView === 'VERIFY'" class="hero-section">
+      <div class="hero-bg">
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+        <div class="hero-orb hero-orb-3"></div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-left animate-in">
+          <div class="badge badge-gold" style="margin-bottom: 1rem;">La Clé d'un Foncier Sûr</div>
+          <h1 class="hero-title">
+            Vérifiez votre<br>
+            <span class="text-gradient">titre foncier</span><br>
+            en 48 heures
+          </h1>
+          <p class="hero-subtitle">
+            L'arbitre digital de confiance qui sécurise votre investissement immobilier au Cameroun.
+          </p>
+
+          <!-- Search Box -->
+          <div class="search-box">
+            <div class="search-input-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text"
+                     [(ngModel)]="titleNumber"
+                     placeholder="Entrez le numéro de titre (ex: Vol 123 Fol 45)"
+                     class="search-input"
+                     (keyup.enter)="checkTitle()">
+            </div>
+            <button (click)="checkTitle()"
+                    [disabled]="isChecking || !titleNumber"
+                    class="btn btn-gold btn-lg search-btn">
+              {{ isChecking ? 'Vérification...' : 'Lancer l\'Arbitrage' }}
+            </button>
+          </div>
+
+          <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p>
+        </div>
+
+        <div class="hero-right animate-in" style="animation-delay: 200ms;">
+          <div class="map-container">
+            <svg class="cameroon-map" viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="3" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+                <radialGradient id="scanPulse" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#D4A017" stop-opacity="0.4"/>
+                  <stop offset="100%" stop-color="#D4A017" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              <!-- Cameroon outline (Natural Earth data) -->
+              <path class="cameroon-outline" d="M33.27,374.98 L34.55,371.58 L36.98,367.45 L40.27,362.19 L44.02,355.59 L46.57,343.91 L48.31,336.64 L49.9,330.0 L52.62,324.01 L55.38,320.0 L63.21,312.24 L69.12,306.38 L72.13,304.03 L74.24,302.04 L77.92,299.77 L81.68,297.07 L84.56,291.9 L86.94,287.07 L88.73,286.02 L91.08,285.17 L98.3,280.0 L102.89,276.7 L103.95,278.34 L104.73,280.37 L105.61,281.3 L109.45,281.95 L114.71,281.91 L117.75,281.32 L119.36,279.6 L120.99,274.91 L121.95,274.02 L123.18,273.78 L128.94,277.06 L133.71,281.73 L138.44,286.35 L140.83,287.99 L141.87,289.8 L143.94,298.23 L145.11,300.33 L147.17,301.19 L150.85,300.64 L154.68,299.15 L158.06,296.99 L161.39,294.2 L163.65,291.68 L164.64,289.82 L165.13,282.92 L165.88,281.42 L169.28,278.67 L174.96,274.08 L178.22,271.44 L177.93,270.5 L175.9,267.69 L174.1,264.61 L175.93,261.42 L177.83,258.98 L185.0,250.69 L185.02,247.96 L185.4,244.63 L191.14,235.22 L194.43,222.73 L194.53,220.32 L197.95,214.29 L201.99,206.58 L209.85,205.33 L212.87,203.41 L216.36,200.0 L218.6,196.83 L219.66,193.82 L220.45,187.99 L221.83,181.36 L222.7,175.54 L225.06,170.15 L229.0,167.43 L235.84,165.18 L236.86,164.12 L237.85,160.56 L238.62,153.15 L238.84,148.68 L239.1,146.75 L239.98,143.41 L246.33,137.48 L249.13,128.19 L251.62,118.46 L258.84,106.71 L267.27,95.0 L271.18,91.85 L274.49,90.4 L278.28,90.25 L280.87,89.39 L289.95,83.55 L293.75,81.58 L296.54,79.56 L297.23,77.8 L297.5,75.22 L296.63,69.19 L298.19,64.76 L299.11,57.88 L299.5,52.53 L299.17,50.67 L297.74,48.11 L297.47,47.56 L294.75,44.22 L290.22,42.2 L283.96,41.66 L280.66,40.46 L280.1,37.68 L279.79,36.07 L279.47,34.31 L279.02,30.42 L274.8,10.0 L282.73,10.05 L292.25,12.49 L294.63,14.33 L295.89,21.33 L299.33,25.29 L305.38,28.54 L309.14,35.28 L310.62,45.48 L313.95,51.58 L314.7,52.54 L318.47,61.37 L319.41,64.07 L319.69,69.38 L319.27,72.97 L321.2,77.41 L318.28,84.98 L317.42,89.63 L317.16,96.16 L318.86,107.68 L321.65,116.56 L324.66,123.75 L327.96,129.32 L333.39,135.48 L339.17,141.12 L344.57,144.65 L339.57,146.74 L329.88,147.0 L324.32,145.81 L321.67,145.75 L318.99,146.49 L308.65,147.55 L298.22,147.05 L288.54,145.65 L282.67,145.88 L278.13,149.3 L274.45,154.45 L271.0,158.52 L272.22,163.03 L274.81,165.53 L279.8,171.02 L284.28,176.35 L286.57,179.92 L295.51,187.74 L304.13,194.74 L305.82,195.9 L308.23,197.16 L309.74,197.68 L314.44,201.68 L320.95,208.26 L326.91,218.56 L331.15,229.02 L335.27,239.19 L337.09,240.91 L339.96,242.0 L340.31,244.18 L340.08,247.41 L339.2,250.04 L336.9,253.58 L332.47,260.84 L326.63,264.99 L324.91,267.51 L324.0,270.63 L322.74,273.76 L319.63,280.5 L317.37,286.0 L315.09,287.72 L309.79,296.03 L306.22,304.36 L305.5,306.53 L304.42,308.13 L302.67,309.43 L296.53,312.01 L294.45,313.3 L292.83,314.84 L291.32,316.6 L290.9,318.7 L292.34,321.68 L294.06,324.04 L295.79,324.19 L297.31,324.08 L298.26,325.49 L299.05,326.31 L299.05,342.52 L297.59,344.97 L297.62,346.06 L296.91,348.85 L296.69,351.97 L297.15,353.21 L298.39,354.22 L300.09,356.4 L301.02,361.38 L303.09,378.91 L304.06,381.68 L305.78,383.63 L311.18,387.41 L316.85,392.38 L318.64,395.61 L319.69,400.91 L321.85,405.07 L321.81,406.48 L320.91,407.03 L318.8,407.09 L317.38,407.38 L318.57,410.41 L321.49,415.69 L326.37,421.16 L331.64,427.08 L335.95,431.92 L341.32,437.51 L345.52,441.88 L349.83,446.37 L353.09,447.43 L355.53,447.75 L356.57,448.63 L357.86,450.69 L360.06,452.97 L362.48,455.96 L363.31,459.01 L362.3,461.91 L363.3,466.06 L363.36,466.42 L364.17,468.06 L363.89,469.53 L364.38,475.04 L365.67,479.85 L367.74,483.96 L367.71,484.29 L367.44,486.82 L364.77,488.44 L363.21,491.12 L362.75,494.85 L363.55,499.39 L365.62,504.75 L365.67,507.9 L364.94,508.34 L363.66,509.34 L362.3,510.0 L358.61,506.33 L354.51,503.84 L348.37,499.53 L342.17,497.98 L334.16,497.7 L330.7,498.23 L328.23,496.6 L324.77,494.73 L322.87,494.24 L320.22,495.7 L318.38,495.76 L316.13,495.2 L311.57,495.26 L311.15,492.76 L310.37,492.27 L305.45,492.5 L303.94,490.43 L303.28,490.67 L301.34,490.01 L297.38,487.07 L293.23,489.02 L284.58,488.77 L273.51,488.83 L262.03,488.9 L251.54,488.81 L241.02,488.72 L239.98,485.97 L237.81,484.56 L233.89,484.43 L222.34,484.98 L213.49,484.54 L210.67,484.18 L207.53,483.46 L200.14,482.82 L191.02,483.33 L188.95,483.19 L181.65,483.3 L164.96,482.55 L155.73,482.66 L155.94,484.34 L155.35,485.55 L154.86,488.46 L144.68,488.46 L131.28,488.45 L118.62,488.45 L110.06,488.45 L95.71,488.45 L90.9,486.45 L89.44,485.17 L89.16,483.72 L88.97,482.74 L87.86,482.45 L88.78,472.16 L90.79,463.57 L91.57,455.61 L94.33,448.48 L92.87,441.44 L91.17,438.37 L82.22,428.38 L86.32,424.6 L80.91,425.12 L79.75,421.41 L77.13,416.96 L78.74,416.24 L80.29,413.8 L85.18,414.55 L85.02,413.36 L80.81,409.62 L81.21,407.73 L82.95,405.63 L82.1,404.74 L79.07,406.92 L76.89,406.85 L75.19,405.44 L73.95,405.2 L74.7,408.07 L73.0,410.62 L71.39,411.51 L68.63,411.36 L66.38,410.71 L65.78,409.29 L63.67,408.19 L57.74,406.3 L52.75,404.08 L51.74,398.0 L49.76,395.37 L48.95,392.41 L48.48,389.02 L49.16,383.82 L47.9,382.98 L46.45,382.7 L44.29,382.95 L42.3,382.67 L39.94,379.79 L37.85,378.68 L39.14,383.97 L37.67,385.46 L34.08,385.03 L32.55,383.02 L32.26,381.53 L33.91,375.12 L33.27,374.98 Z"
+                fill="rgba(45, 106, 79, 0.06)"
+                stroke="var(--mt-emerald)"
+                stroke-width="1.5"
+                stroke-opacity="0.3"/>
+
+              <!-- Network lines (notary connections) -->
+              <g class="network-lines">
+                <path *ngFor="let line of networkLines; let i = index"
+                      [attr.d]="getCityLine(line)"
+                      stroke="var(--mt-sage)"
+                      stroke-width="1"
+                      stroke-dasharray="4,4"
+                      fill="none"
+                      [attr.opacity]="cities[line[0]].checked && cities[line[1]].checked ? 0.6 : 0.15"
+                      style="transition: opacity 0.8s ease;"/>
+              </g>
+
+              <!-- City nodes -->
+              <g *ngFor="let city of cities; let i = index"
+                 class="city-node"
+                 (mouseenter)="hoveredCity = city"
+                 (mouseleave)="hoveredCity = null">
+
+                <!-- Scan pulse ring -->
+                <circle *ngIf="city.scanning"
+                        [attr.cx]="city.x" [attr.cy]="city.y" r="30"
+                        fill="url(#scanPulse)"
+                        class="scan-pulse"/>
+
+                <!-- City dot -->
+                <circle [attr.cx]="city.x" [attr.cy]="city.y"
+                        [attr.r]="city.scanning ? 9 : city.checked ? 8 : 5"
+                        [class.dot-unchecked]="!city.checked && !city.scanning"
+                        [class.dot-scanning]="city.scanning"
+                        [class.dot-green]="city.checked && city.status === 'GREEN'"
+                        [class.dot-red]="city.checked && city.status === 'RED'"
+                        [class.dot-yellow]="city.checked && city.status === 'YELLOW'"
+                        class="city-dot"
+                        filter="url(#glow)"/>
+
+                <!-- Status icon -->
+                <text *ngIf="city.checked && !city.scanning"
+                      [attr.x]="city.x" [attr.y]="city.y + 4"
+                      text-anchor="middle" fill="white" font-size="9" font-weight="bold"
+                      class="status-check">
+                  {{ city.status === 'GREEN' ? '✓' : city.status === 'RED' ? '✗' : '!' }}
+                </text>
+
+                <!-- Scanning icon -->
+                <text *ngIf="city.scanning"
+                      [attr.x]="city.x" [attr.y]="city.y + 4"
+                      text-anchor="middle" fill="white" font-size="10"
+                      class="scanning-icon">
+                  🔍
+                </text>
+
+                <!-- City label -->
+                <text [attr.x]="city.x" [attr.y]="city.y + 22"
+                      text-anchor="middle"
+                      class="city-label"
+                      [class.label-active]="city.checked || city.scanning">
+                  {{ city.name }}
+                </text>
+
+                <!-- Notary indicator -->
+                <text *ngIf="city.checked"
+                      [attr.x]="city.x" [attr.y]="city.y + 34"
+                      text-anchor="middle" class="notary-label">
+                  {{ city.notary }}
+                </text>
+              </g>
+
+              <!-- Magnifying glass on scanning city -->
+              <g *ngIf="scanningCity" class="magnifier-overlay"
+                 [attr.transform]="'translate(' + scanningCity.x + ',' + scanningCity.y + ')'">
+                <circle r="28" fill="none" stroke="#D4A017" stroke-width="2.5" opacity="0.6" class="magnifier-ring"/>
+                <circle r="22" fill="rgba(212, 160, 23, 0.05)" stroke="none"/>
+                <line x1="19" y1="19" x2="32" y2="32" stroke="#D4A017" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+              </g>
+            </svg>
+
+            <!-- Tooltip au survol -->
+            <div *ngIf="hoveredCity" class="city-tooltip"
+                 [style.left.px]="hoveredCity.x + 20"
+                 [style.top.px]="hoveredCity.y - 20">
+              <div class="tooltip-header">
+                <span class="tooltip-city">{{ hoveredCity.name }}</span>
+                <span class="tooltip-badge"
+                      [class.badge-green]="hoveredCity.checked && hoveredCity.status === 'GREEN'"
+                      [class.badge-red]="hoveredCity.checked && hoveredCity.status === 'RED'"
+                      [class.badge-yellow]="hoveredCity.checked && hoveredCity.status === 'YELLOW'"
+                      *ngIf="hoveredCity.checked">
+                  {{ hoveredCity.status === 'GREEN' ? 'Sûr' : hoveredCity.status === 'RED' ? 'Litige' : 'Prudence' }}
+                </span>
+              </div>
+              <div class="tooltip-row">{{ hoveredCity.title }} · {{ hoveredCity.surface }} m²</div>
+              <div class="tooltip-notary">⚖️ {{ hoveredCity.notary }}</div>
+              <div *ngIf="!hoveredCity.checked" class="tooltip-pending">En attente d'arbitrage...</div>
+            </div>
+
+            <!-- Stats bar -->
+            <div class="map-stats">
+              <div class="stat-chip stat-green">
+                <span class="stat-dot" style="background: var(--mt-emerald);"></span>
+                <span class="stat-num">{{ getCheckedCount('GREEN') }}</span> validés
+              </div>
+              <div class="stat-chip stat-red">
+                <span class="stat-dot" style="background: var(--mt-red);"></span>
+                <span class="stat-num">{{ getCheckedCount('RED') }}</span> litiges
+              </div>
+              <div class="stat-chip stat-pending">
+                <span class="stat-dot" style="background: var(--mt-gold);"></span>
+                <span class="stat-num">{{ getCheckedCount('PENDING') }}</span> en cours
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div *ngIf="verificationResult" class="result-card animate-in" [ngClass]="getStatusClass(verificationResult.status)">
+        <div class="result-icon">
+          {{ verificationResult.status === 'GREEN' ? '✅' : verificationResult.status === 'RED' ? '🚫' : verificationResult.status === 'YELLOW' ? '⚠️' : '⏳' }}
+        </div>
+        <div class="result-body">
+          <h3>Résultat de l'Arbitrage</h3>
+          <p class="result-title-num">Titre : {{ verificationResult.title }}</p>
+          <p class="result-message">{{ verificationResult.message }}</p>
+          <p class="result-date">Vérifié le {{ verificationResult.date }}</p>
+        </div>
+        <button *ngIf="verificationResult.status !== 'PENDING'" (click)="downloadPdf()" class="btn btn-gold btn-sm">
+          📄 Rapport PDF
+        </button>
+      </div>
+
+      <!-- Interactive Chat -->
+      <div class="chat-section animate-in">
+        <h2 class="section-title-center">Ils ont sécurisé leur foncier</h2>
+        <div class="chat-window">
+          <div class="chat-header-bar">
+            <div class="chat-header-avatars">
+              <img src="assets/icons/avatar-jp.jpg" alt="Jean-Pierre" class="chat-header-pic"/>
+              <img src="assets/icons/avatar-carine.jpg" alt="Carine" class="chat-header-pic"/>
+            </div>
+            <div class="chat-header-info">
+              <span class="chat-header-names">Jean-Pierre & Carine</span>
+              <span class="chat-header-status">
+                <span class="online-dot"></span> En ligne
+              </span>
+            </div>
+          </div>
+
+          <div class="chat-body">
+            <ng-container *ngFor="let msg of visibleMessages; let i = index">
+              <!-- Date separator -->
+              <div *ngIf="msg.type === 'date'" class="chat-date">
+                <span>{{ msg.text }}</span>
+              </div>
+
+              <!-- Message bubble -->
+              <div *ngIf="msg.type === 'msg'" class="chat-row"
+                   [class.chat-row-right]="msg.sender === 'carine'"
+                   [class.chat-row-left]="msg.sender === 'jp'">
+                <img [src]="msg.sender === 'jp' ? 'assets/icons/avatar-jp.jpg' : 'assets/icons/avatar-carine.jpg'"
+                     [alt]="msg.sender === 'jp' ? 'Jean-Pierre' : 'Carine'"
+                     class="chat-avatar"/>
+                <div class="chat-bubble"
+                     [class.bubble-jp]="msg.sender === 'jp'"
+                     [class.bubble-carine]="msg.sender === 'carine'">
+                  <p class="bubble-text">{{ msg.text }}</p>
+                  <span class="bubble-time">{{ msg.time }}</span>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Typing indicator -->
+            <div *ngIf="isTyping" class="chat-row"
+                 [class.chat-row-right]="typingSender === 'carine'"
+                 [class.chat-row-left]="typingSender === 'jp'">
+              <img [src]="typingSender === 'jp' ? 'assets/icons/avatar-jp.jpg' : 'assets/icons/avatar-carine.jpg'"
+                   alt="" class="chat-avatar"/>
+              <div class="typing-indicator"
+                   [class.bubble-jp]="typingSender === 'jp'"
+                   [class.bubble-carine]="typingSender === 'carine'">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pillars -->
+      <div class="pillars-section">
+        <h2 class="section-title-center">Les 4 Piliers de Confiance</h2>
+        <div class="pillars-grid stagger">
+          <div class="pillar-card" (click)="navigate('CATALOGUE')">
+            <div class="pillar-icon">🏠</div>
+            <h3>Acheter</h3>
+            <p>Catalogue de terrains certifiés. Filtre « zéro risque » activé.</p>
+            <span class="pillar-arrow">→</span>
+          </div>
+          <div class="pillar-card" (click)="navigate('VERIFY')">
+            <div class="pillar-icon">🔍</div>
+            <h3>Vérifier</h3>
+            <p>Arbitrage notarial express. Rapport en 48 heures.</p>
+            <span class="pillar-arrow">→</span>
+          </div>
+          <div class="pillar-card" (click)="navigate('TITRE')">
+            <div class="pillar-icon">📋</div>
+            <h3>Titrer</h3>
+            <p>Accélérateur administratif MINDCAF. Suivi en temps réel.</p>
+            <span class="pillar-arrow">→</span>
+          </div>
+          <div class="pillar-card" (click)="navigate('PREINVEST')">
+            <div class="pillar-icon">💡</div>
+            <h3>Pré-Investir</h3>
+            <p>maTerre finance le titrage. Vous récoltez la plus-value.</p>
+            <span class="pillar-arrow">→</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Sub-views ─── -->
+    <section *ngIf="currentView === 'CATALOGUE'" class="view-section animate-in"><app-catalogue></app-catalogue></section>
+    <section *ngIf="currentView === 'NOTARY'" class="view-section animate-in"><app-notary-dashboard></app-notary-dashboard></section>
+    <section *ngIf="currentView === 'TITRE'" class="view-section animate-in"><app-titling-tracker></app-titling-tracker></section>
+    <section *ngIf="currentView === 'PREINVEST'" class="view-section animate-in"><app-pre-invest-dashboard></app-pre-invest-dashboard></section>
+    <section *ngIf="currentView === 'COINVEST'" class="view-section animate-in"><app-investment-marketplace></app-investment-marketplace></section>
+    <section *ngIf="currentView === 'CLUB'" class="view-section animate-in"><app-subscription></app-subscription></section>
+    <section *ngIf="currentView === 'PORTFOLIO'" class="view-section animate-in"><app-investor-dashboard></app-investor-dashboard></section>
+    <section *ngIf="currentView === 'ADMIN'" class="view-section animate-in"><app-admin-dashboard></app-admin-dashboard></section>
+  </main>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/icons/icon-192x192.png" alt="maTerre" class="footer-logo">
+        <p class="footer-tagline">La Clé d'un Foncier Sûr.</p>
+      </div>
+      <div class="footer-links">
+        <a (click)="navigate('VERIFY')">Vérifier</a>
+        <a (click)="navigate('CATALOGUE')">Catalogue</a>
+        <a (click)="navigate('TITRE')">Titrer</a>
+        <a (click)="navigate('CLUB')">Club Elite</a>
+      </div>
+      <div class="footer-copy">
+        &copy; 2024 maTerre — L'Arbitre du Foncier au Cameroun
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ LOGIN MODAL ═══ -->
+  <div *ngIf="showLogin" class="modal-overlay" (click)="showLogin = false">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <app-login (loginSuccess)="onLoginSuccess()"></app-login>
+    </div>
+  </div>
+</div>
